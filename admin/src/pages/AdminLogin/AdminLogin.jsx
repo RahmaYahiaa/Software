@@ -17,13 +17,15 @@ export default function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/admin/login', {
+      const response = await fetch('http://localhost:5000/api/admin/login', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' 
+        headers: {
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(credentials),
-        credentials: 'include' // For session cookies if needed
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password
+        })
       });
 
       // First check if response is OK
@@ -34,7 +36,9 @@ export default function AdminLogin() {
 
       const data = await response.json();
       if (data.success) {
-        navigate('/admin/dashboard');
+        // حفظ حالة تسجيل الدخول في localStorage
+        localStorage.setItem('adminLoggedIn', 'true');
+        navigate('/'); // Redirect to admin dashboard
       } else {
         throw new Error(data.message || 'Authentication failed');
       }

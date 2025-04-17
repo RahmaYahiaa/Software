@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TextField, Button, Box, Typography, CircularProgress } from '@mui/material';
 
@@ -15,12 +15,15 @@ export default function ProductForm() {
   });
 
   // Load product data if editing (when id exists)
-  useState(() => {
+  useEffect(() => {
     if (id) {
       setLoading(true);
       fetch(`/api/products/${id}`)
         .then(res => res.json())
         .then(data => setFormData(data))
+        .catch(err => {
+          console.error("Failed to load product", err);
+        })
         .finally(() => setLoading(false));
     }
   }, [id]);

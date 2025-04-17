@@ -8,23 +8,17 @@ export default function AdminRoute({ children }: { children: JSX.Element }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const verifyAuth = async () => {
-      try {
-        const res = await fetch('/api/admin/verify', {
-          credentials: 'include' // Important for session cookies
-        });
-        
-        if (!res.ok) throw new Error('Authentication failed');
-        setIsAuthenticated(true);
-      } catch (err) {
-        setError(err.message);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // تحقق من تسجيل الدخول باستخدام localStorage بدلاً من API
+    const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
 
-    verifyAuth();
+    if (isLoggedIn) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      setError('You are not authenticated');
+    }
+
+    setLoading(false);
   }, []);
 
   if (loading) {

@@ -1,9 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import AdminRoute from './components/AdminRoute';
+// import { BrowserRouter as Router } from 'react-router-dom';
+import AdminRoute from './components/AdminRoute/AdminRoute';
 import ProductList from './pages/ProductList/ProductList';
 import ProductForm from './pages/ProductForm/ProductForm';
 import AdminLogin from './pages/AdminLogin/AdminLogin';
+
+
+/*eslint-disable*/
 function App() {
   return (
     <>
