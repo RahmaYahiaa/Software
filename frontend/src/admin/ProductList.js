@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ViewProduct from './ViewProduct';
+import EditProduct from './EditProduct';
 import './styles.css';
 
 function ProductList() {
@@ -163,40 +165,35 @@ function ProductList() {
       )}
 
       {/* View Product */}
-      {showView && selectedProduct && (
-        <div className="popup">
-          <h3>Product Details</h3>
-          <p><strong>Name:</strong> {selectedProduct.name}</p>
-          <p><strong>Price:</strong> ${selectedProduct.price}</p>
-          <p><strong>Description:</strong> {selectedProduct.description}</p>
-          <p><strong>Category:</strong> {selectedProduct.category}</p>
-          <p><strong>Stock:</strong> {selectedProduct.stock}</p>
-          <button onClick={() => setShowView(false)} className="btn btn-secondary">Close</button>
-        </div>
+      {showView && (
+        <ViewProduct 
+            product={selectedProduct} 
+            onClose={() => {
+              setShowView(false);
+            }} 
+        />
       )}
-
+    
+      
       {/* Add or Edit Product Form */}
+
       {(showForm || showEdit) && (
-        <form onSubmit={handleSubmit} className="edit-form">
-          <h2>{showEdit ? 'Edit Product' : 'Add Product'}</h2>
-          <input type="text" name="name" placeholder="Product Name" value={product.name} onChange={handleChange} required />
-          <input type="number" name="price" placeholder="Price" value={product.price} onChange={handleChange} required />
-          <textarea name="description" placeholder="Description" value={product.description} onChange={handleChange} />
-          <input type="text" name="category" placeholder="Category" value={product.category} onChange={handleChange} />
-          <input type="number" name="stock" placeholder="Stock" value={product.stock} onChange={handleChange} />
-          <div className="form-actions">
-            <button type="submit" className="btn btn-success">{showEdit ? 'Update' : 'Add'}</button>
-            <button type="button" className="btn btn-secondary" onClick={() => {
-              setShowForm(false);
-              setShowEdit(false);
-              setSelectedProduct(null);
-            }}>
-              Cancel
-            </button>
-          </div>
-          {message && <p className="message">{message}</p>}
-        </form>
-      )}
+  <EditProduct 
+    product={product}
+    handleChange={handleChange}
+    handleSubmit={handleSubmit}
+    showEdit={showEdit}
+    showForm={showForm}  // Pass showForm prop
+    onCancel={() => {
+      setShowForm(false);
+      setShowEdit(false);
+      setSelectedProduct(null);
+    }}
+    message={message}
+  />
+)}
+      
+
     </div>
   );
 }
