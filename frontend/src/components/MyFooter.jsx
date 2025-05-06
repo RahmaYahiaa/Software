@@ -36,8 +36,8 @@ export default function Footer() {
       </Container>
 
       <div className="text-center p-3" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © 2020 Copyright:
-        <a className="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        © 2025 Copyright:
+        <a className="text-dark" href="https://mdbootstrap.com/">FAVSHOPING.com</a>
       </div>
     </footer>
   );

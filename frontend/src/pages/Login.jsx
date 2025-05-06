@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -7,6 +8,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -22,6 +24,9 @@ export default function Login() {
         icon: "success",
         title: "Login Successful",
       });
+
+      navigate("/");
+
 
       setEmail("");
       setPassword("");

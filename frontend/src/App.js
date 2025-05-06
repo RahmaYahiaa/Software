@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import Signup from "./pages/Signup";
 import Cart from "./pages/Cart";
 import AdminRoutes from './admin/AdminRoutes'; 
+import AdminLogin from './admin/AdminLogin';
 
 /*eslint-disable*/
 function App() {
@@ -31,6 +32,7 @@ function App() {
 
 
         <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Routes>
     </>
   );
