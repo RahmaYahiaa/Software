@@ -1,0 +1,24 @@
+config:
+  target: 'http://localhost:5000'
+  phases:
+    - duration: 30
+      arrivalRate: 10  
+
+scenarios:
+  - name: Test Signup and Login
+    flow:
+      - post:
+          url: '/api/signup'
+          json:
+            firstName: "Test"
+            lastName: "User"
+            email: "testuser@example.com"
+            mobile: "0123456789"
+            password: "Test@1234"
+            confirmPassword: "Test@1234"
+            gender: "female"
+      - post:
+          url: '/api/login'
+          json:
+            email: "testuser@example.com"
+            password: "Test@1234"
