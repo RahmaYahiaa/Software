@@ -158,10 +158,12 @@ export default function SignUp() {
 
     try {
       const res = await axios.post("http://localhost:5000/api/signup", {
-        name: `${formData.firstName} ${formData.lastName}`,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         mobile: formData.mobile,
         password: formData.password,
+        confirmPassword: formData.confirmPassword,
         gender: formData.gender
       });
 
