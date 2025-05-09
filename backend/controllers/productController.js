@@ -1,7 +1,10 @@
 const Product = require("../models/productModel");
 
-const createProduct=async (req, res) => {
+const createProduct = async (req, res) => {
   try {
+    if (req.body.name) {
+      req.body.name = req.body.name.charAt(0).toUpperCase() + req.body.name.slice(1);
+    }
     const product = new Product(req.body);
     const saved = await product.save();
     res.status(201).json(saved);
@@ -9,6 +12,23 @@ const createProduct=async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 }
+
+//const sumProductQuantities = async (req, res) => {
+ // try {
+   // console.log("Sum of product quantities route hit");
+   // const products = await Product.find();
+   // const totalQuantity = products.reduce((sum, product) => sum + product.quantity, 0);
+   // res.status(200).json({ totalQuantity });
+  //} catch (error) {
+   // console.error("Error calculating total quantity", error);
+  //  res.status(500).json({ message: 'Error calculating total quantity' });
+  //}
+//};
+
+
+
+
+
 
 const getAllProducts =async (req, res) => {
   try {
@@ -48,10 +68,12 @@ const deleteProduct = async (req, res) => {
     }
   }
 
-module.exports = {
+  module.exports = {
     createProduct,
     getAllProducts,
     getProductById,
     updateProduct,
     deleteProduct,
+  /*sumProductQuantities*/
   };
+  

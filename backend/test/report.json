@@ -1,0 +1,108 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.Test Signup and Login": 300,
+      "vusers.created": 300,
+      "http.requests": 300,
+      "plugins.metrics-by-endpoint./api/signup.errors.ECONNREFUSED": 300,
+      "errors.ECONNREFUSED": 300,
+      "vusers.failed": 300
+    },
+    "rates": {
+      "http.request_rate": 10
+    },
+    "firstCounterAt": 1746823384097,
+    "lastCounterAt": 1746823413661,
+    "firstMetricAt": 1746823384097,
+    "lastMetricAt": 1746823413661,
+    "period": 1746823410000,
+    "summaries": {},
+    "histograms": {}
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.Test Signup and Login": 60,
+        "vusers.created": 60,
+        "http.requests": 60,
+        "plugins.metrics-by-endpoint./api/signup.errors.ECONNREFUSED": 60,
+        "errors.ECONNREFUSED": 60,
+        "vusers.failed": 60
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1746823384097,
+      "lastCounterAt": 1746823389660,
+      "firstMetricAt": 1746823384097,
+      "lastMetricAt": 1746823389660,
+      "period": "1746823380000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Test Signup and Login": 100,
+        "vusers.created": 100,
+        "http.requests": 100,
+        "plugins.metrics-by-endpoint./api/signup.errors.ECONNREFUSED": 100,
+        "errors.ECONNREFUSED": 100,
+        "vusers.failed": 100
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1746823390096,
+      "lastCounterAt": 1746823399661,
+      "firstMetricAt": 1746823390096,
+      "lastMetricAt": 1746823399661,
+      "period": "1746823390000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Test Signup and Login": 100,
+        "vusers.created": 100,
+        "http.requests": 100,
+        "plugins.metrics-by-endpoint./api/signup.errors.ECONNREFUSED": 100,
+        "errors.ECONNREFUSED": 100,
+        "vusers.failed": 100
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1746823400096,
+      "lastCounterAt": 1746823409660,
+      "firstMetricAt": 1746823400096,
+      "lastMetricAt": 1746823409660,
+      "period": "1746823400000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.Test Signup and Login": 40,
+        "vusers.created": 40,
+        "http.requests": 40,
+        "plugins.metrics-by-endpoint./api/signup.errors.ECONNREFUSED": 40,
+        "errors.ECONNREFUSED": 40,
+        "vusers.failed": 40
+      },
+      "rates": {
+        "http.request_rate": 10
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1746823410096,
+      "lastCounterAt": 1746823413661,
+      "firstMetricAt": 1746823410096,
+      "lastMetricAt": 1746823413661,
+      "period": "1746823410000",
+      "summaries": {},
+      "histograms": {}
+    }
+  ]
+}
