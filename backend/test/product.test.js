@@ -2,19 +2,15 @@ const request = require('supertest');
 const app = require('../app');
 const Product = require('../models/productModel');
 const mongoose = require('mongoose');
-require('dotenv').config({ path: '.env.test' });
-const chai = require('chai');
-const expect = chai.expect;
+require('dotenv').config({ path: '.env.test' });  // التأكد من تحميل متغيرات البيئة من ملف .env.test
 
 
-before(async () => {
-  await mongoose.connect(process.env.TEST_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+beforeAll(async () => {
+  await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }); // استخدام MONGO_URL من ملف .env.test
 });
 
-
-
-after(async () => {
-  await mongoose.disconnect(); 
+afterAll(async () => {
+  await mongoose.disconnect();
 });
 
 describe("Product Functions", () => {
@@ -23,21 +19,21 @@ describe("Product Functions", () => {
     const res = await request(app)
       .post('/api/products')
       .send({ name: "shoes", price: 100 });
-    expect(res.body.name).to.equal("Shoes");
+    
+    expect(res.body.name).toBe("Shoes");
+    expect(res.status).toBe(201); // Ensure the status code is 201 (Created)
   });
 
   //it("should return the total sum of product quantities", async () => {
     // Insert mock products before testing the sum
    // await Product.create([
-     // { name: 'Product 1', price: 50, quantity: 5 },
+    //  { name: 'Product 1', price: 50, quantity: 5 },
      // { name: 'Product 2', price: 30, quantity: 3 },
-      //{ name: 'Product 3', price: 20, quantity: 2 },
+    //  { name: 'Product 3', price: 20, quantity: 2 },
    // ]);
   
-   // const res = await request(app).get('/api/products/sum-quantities');
-  
-   // expect(res.status).to.equal(200); // Check for a successful response
-   // expect(res.body.totalQuantity).to.equal(10); // Total sum of quantities: 5 + 3 + 2 = 10
+    //const res = await request(app).get('/api/products/sum-quantities');
+    //expect(res.status).toBe(200); // Check for a successful response
+    //expect(res.body.totalQuantity).toBe(10); // Total sum of quantities: 5 + 3 + 2 = 10
  // });
-  
 });
