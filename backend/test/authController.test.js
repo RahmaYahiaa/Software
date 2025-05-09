@@ -1,12 +1,12 @@
-const { expect } = require('chai');
-const sinon = require('sinon');
 const bcrypt = require('bcryptjs');
-const User = require('../models/User'); 
-const { signup, login } = require('../controllers/userController'); 
+const User = require('../models/User');
+const { signup, login } = require('../controllers/userController');
 
-describe('User Controller - Unit Tests', () => {
+jest.mock('bcryptjs');
+
+describe('User Controller - Unit Tests (Jest)', () => {
     afterEach(() => {
-        sinon.restore(); 
+        jest.clearAllMocks();
     });
 
     describe('Signup', () => {
@@ -23,18 +23,18 @@ describe('User Controller - Unit Tests', () => {
                 },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await signup(req, res);
 
-            expect(res.status.calledWith(400)).to.be.true;
-            expect(res.json.calledWith({ message: 'Passwords do not match' })).to.be.true;
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Passwords do not match' });
         });
 
         it('should return error if user already exists', async () => {
-            sinon.stub(User, 'findOne').resolves({ email: 'john@example.com' });
+            jest.spyOn(User, 'findOne').mockResolvedValue({ email: 'john@example.com' });
 
             const req = {
                 body: {
@@ -48,20 +48,22 @@ describe('User Controller - Unit Tests', () => {
                 },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await signup(req, res);
 
-            expect(res.status.calledWith(400)).to.be.true;
-            expect(res.json.calledWith({ message: 'User already exists' })).to.be.true;
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({ message: 'User already exists' });
         });
 
         it('should register a new user successfully', async () => {
-            sinon.stub(User, 'findOne').resolves(null); 
-            sinon.stub(bcrypt, 'hash').resolves('hashedPassword');
-            const saveStub = sinon.stub(User.prototype, 'save').resolves();
+            jest.spyOn(User, 'findOne').mockResolvedValue(null);
+            bcrypt.hash.mockResolvedValue('hashedPassword');
+            const saveMock = jest.fn().mockResolvedValue();
+
+            jest.spyOn(User.prototype, 'save').mockImplementation(saveMock);
 
             const req = {
                 body: {
@@ -75,87 +77,81 @@ describe('User Controller - Unit Tests', () => {
                 },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await signup(req, res);
 
-            expect(saveStub.calledOnce).to.be.true;
-            expect(res.status.calledWith(201)).to.be.true;
-            expect(res.json.calledWith({ message: 'User registered successfully' })).to.be.true;
+            expect(saveMock).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.json).toHaveBeenCalledWith({ message: 'User registered successfully' });
         });
     });
 
     describe('Login', () => {
         it('should return error if user is not found', async () => {
-            sinon.stub(User, 'findOne').resolves(null);
+            jest.spyOn(User, 'findOne').mockResolvedValue(null);
 
             const req = {
                 body: { email: 'notfound@example.com', password: 'password' },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await login(req, res);
 
-            expect(res.status.calledWith(400)).to.be.true;
-            expect(res.json.calledWith({ message: 'Invalid credentials' })).to.be.true;
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid credentials' });
         });
 
         it('should return error if password is incorrect', async () => {
-            const mockUser = { 
-                email: 'test@example.com', 
+            const mockUser = {
+                email: 'test@example.com',
                 password: 'hashed',
-                comparePassword: function(candidatePassword) {
-                    return bcrypt.compare(candidatePassword, this.password);
-                }
             };
-            sinon.stub(User, 'findOne').resolves(mockUser);
-            sinon.stub(bcrypt, 'compare').resolves(false);
+            jest.spyOn(User, 'findOne').mockResolvedValue(mockUser);
+            bcrypt.compare.mockResolvedValue(false);
 
             const req = {
                 body: { email: 'test@example.com', password: 'wrongpass' },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await login(req, res);
 
-            expect(res.status.calledWith(400)).to.be.true;
-            expect(res.json.calledWith({ message: 'Invalid credentials' })).to.be.true;
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid credentials' });
         });
 
         it('should login successfully if credentials are correct', async () => {
-            const mockUser = { 
-                email: 'test@example.com', 
+            const mockUser = {
+                email: 'test@example.com',
                 password: 'hashed',
-                comparePassword: function(candidatePassword) {
-                    return bcrypt.compare(candidatePassword, this.password);
-                }
             };
-            sinon.stub(User, 'findOne').resolves(mockUser);
-            sinon.stub(bcrypt, 'compare').resolves(true);
+            jest.spyOn(User, 'findOne').mockResolvedValue(mockUser);
+            bcrypt.compare.mockResolvedValue(true);
 
             const req = {
                 body: { email: 'test@example.com', password: 'correctpass' },
             };
             const res = {
-                status: sinon.stub().returnsThis(),
-                json: sinon.stub(),
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
             };
 
             await login(req, res);
 
-            expect(res.status.calledWith(200)).to.be.true;
-            expect(res.json.calledWith(sinon.match({
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
                 message: 'Login successful',
-                user: sinon.match.object
-            }))).to.be.true;
+                user: expect.any(Object),
+            }));
         });
     });
-}); 
+})
