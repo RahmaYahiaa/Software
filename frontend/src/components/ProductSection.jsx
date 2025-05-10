@@ -66,9 +66,10 @@
                       <p className="card-text lead fw-bold">
                         ${product.price}
                       </p>
-                      <NavLink to={`/products/${product.id}`} className="btn btn-outline-dark">
+                      <NavLink className="btn btn-outline-dark">
                         Buy Now
                       </NavLink>
+                      {/* to={`/products/${product.id}`}  */}
                     </div>
                   </div>
                 </div>
