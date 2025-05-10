@@ -1,20 +1,15 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
 const app = require("../app");
 const Product = require("../models/productModel");
 
-let mongoServer;
-
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
+  const uri = process.env.MONGO_URl ;
   await mongoose.connect(uri);
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
-  await mongoServer.stop();
 });
 
 describe("Product API Integration Tests", () => {

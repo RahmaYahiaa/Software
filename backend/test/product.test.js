@@ -2,11 +2,13 @@ const request = require('supertest');
 const app = require('../app');
 const Product = require('../models/productModel');
 const mongoose = require('mongoose');
-require('dotenv').config({ path: '.env.test' });  // التأكد من تحميل متغيرات البيئة من ملف .env.test
+require('dotenv').config();  
 
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }); // استخدام MONGO_URL من ملف .env.test
+  console.log("MONGO_URI:", process.env.MONGO_URl);
+
+  await mongoose.connect(process.env.MONGO_URl);
 });
 
 afterAll(async () => {

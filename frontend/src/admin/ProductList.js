@@ -1,3 +1,4 @@
+// ProductList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ViewProduct from './ViewProduct';
@@ -13,12 +14,15 @@ function ProductList() {
   const [showEdit, setShowEdit] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [message, setMessage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+
   const [product, setProduct] = useState({
     name: '',
     price: '',
     description: '',
     category: '',
-    stock: 0
+    stock: 0,
+    image: ''
   });
 
   const fetchProducts = async () => {
@@ -69,6 +73,7 @@ function ProductList() {
       description: product.description,
       category: product.category,
       stock: product.stock,
+      image: product.image
     });
   };
 
@@ -77,6 +82,10 @@ function ProductList() {
       ...product,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -88,6 +97,23 @@ function ProductList() {
     }
 
     try {
+      let imageUrl = product.image;
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        formData.append('upload_preset', 'YOUR_UPLOAD_PRESET');
+        formData.append('cloud_name', 'YOUR_CLOUD_NAME');
+
+        const uploadRes = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const uploadData = await uploadRes.json();
+        imageUrl = uploadData.secure_url;
+      }
+
       const endpoint = showEdit
         ? `http://localhost:5000/api/products/${selectedProduct._id}`
         : 'http://localhost:5000/api/products';
@@ -100,13 +126,15 @@ function ProductList() {
         body: JSON.stringify({
           ...product,
           price: parseFloat(product.price),
-          stock: parseInt(product.stock)
+          stock: parseInt(product.stock),
+          image: imageUrl
         }),
       });
 
       if (response.ok) {
         setMessage(showEdit ? 'Product updated successfully!' : 'Product added successfully!');
-        setProduct({ name: '', price: '', description: '', category: '', stock: 0 });
+        setProduct({ name: '', price: '', description: '', category: '', stock: 0, image: '' });
+        setImageFile(null);
         setShowForm(false);
         setShowEdit(false);
         setSelectedProduct(null);
@@ -127,7 +155,8 @@ function ProductList() {
         setShowEdit(false);
         setShowView(false);
         setSelectedProduct(null);
-        setProduct({ name: '', price: '', description: '', category: '', stock: 0 });
+        setProduct({ name: '', price: '', description: '', category: '', stock: 0, image: '' });
+        setImageFile(null);
       }}>
         Add Product
       </button>
@@ -163,36 +192,30 @@ function ProductList() {
         </table>
       )}
 
-      {/* View Product */}
       {showView && (
         <ViewProduct 
-            product={selectedProduct} 
-            onClose={() => {
-              setShowView(false);
-            }} 
+          product={selectedProduct} 
+          onClose={() => setShowView(false)} 
         />
       )}
-    
-      
-      {/* Add or Edit Product Form */}
 
       {(showForm || showEdit) && (
-  <EditProduct 
-    product={product}
-    handleChange={handleChange}
-    handleSubmit={handleSubmit}
-    showEdit={showEdit}
-    showForm={showForm}  // Pass showForm prop
-    onCancel={() => {
-      setShowForm(false);
-      setShowEdit(false);
-      setSelectedProduct(null);
-    }}
-    message={message}
-  />
-)}
-      
-
+        <EditProduct 
+          product={product}
+          handleChange={handleChange}
+          handleImageChange={handleImageChange}
+          handleSubmit={handleSubmit}
+          imageFile={imageFile}
+          showEdit={showEdit}
+          showForm={showForm}
+          onCancel={() => {
+            setShowForm(false);
+            setShowEdit(false);
+            setSelectedProduct(null);
+          }}
+          message={message}
+        />
+      )}
     </div>
   );
 }

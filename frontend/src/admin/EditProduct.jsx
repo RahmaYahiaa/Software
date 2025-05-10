@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.css';
 
-const EditProduct = ({ 
+const EditProduct = ({
   product,
   handleChange,
   handleSubmit,
   showEdit,
-  showForm,  // Add showForm to props
+  showForm,
   onCancel,
   message
 }) => {
@@ -14,48 +14,63 @@ const EditProduct = ({
 
   return (
     <>
-      {/* Modal Backdrop */}
-      <div className="modal-backdrop" onClick={onCancel}></div>
-      
-      {/* Modal Content */}
+      <div className="modal-backdrop" onClick={onCancel} />
+
       <div className="edit-modal">
         <form onSubmit={handleSubmit} className="edit-form">
           <h2>{showEdit ? 'Edit Product' : 'Add Product'}</h2>
-          
+
           <div className="form-grid">
-            <div className="form-info">
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="Product Name" 
-                value={product.name} 
-                onChange={handleChange} 
-                required 
+            {/* Left Column */}
+            <div className="form-group">
+              <input
+                type="text"
+                name="name"
+                placeholder="Product Name"
+                value={product.name}
+                onChange={handleChange}
+                required
               />
-              <textarea 
-                name="description" 
-                placeholder="Description" 
-                value={product.description} 
-                onChange={handleChange} 
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={product.description}
+                onChange={handleChange}
               />
-              <input 
-                type="text" 
-                name="category" 
-                placeholder="Category" 
-                value={product.category} 
-                onChange={handleChange} 
+              <input
+                type="text"
+                name="category"
+                placeholder="Category"
+                value={product.category}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="image"
+                placeholder="Image URL"
+                value={product.image}
+                onChange={handleChange}
               />
             </div>
-            
-            <div className="form-price">
-              <input 
-                type="number" 
-                name="price" 
-                placeholder="Price" 
-                value={product.price} 
-                onChange={handleChange} 
-                required 
+
+            {/* Right Column */}
+            <div className="form-group">
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={product.price}
+                onChange={handleChange}
+                required
                 step="0.01"
+              />
+              <input
+                type="number"
+                name="stock"
+                placeholder="Stock Quantity"
+                value={product.stock}
+                onChange={handleChange}
+                min="0"
               />
             </div>
           </div>
@@ -64,15 +79,11 @@ const EditProduct = ({
             <button type="submit" className="btn btn-success">
               {showEdit ? 'Update' : 'Add'}
             </button>
-            <button 
-              type="button" 
-              className="btn btn-secondary"
-              onClick={onCancel}
-            >
+            <button type="button" className="btn btn-secondary" onClick={onCancel}>
               Cancel
             </button>
           </div>
-          
+
           {message && <p className="message">{message}</p>}
         </form>
       </div>
